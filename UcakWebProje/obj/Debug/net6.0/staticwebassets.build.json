@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "SagCtSqnOLm1Ffv9wBdMTTjpyScn+Jyu07B/5HOOo1g=",
+  "Hash": "TzdNQfJ9SftOyx5xDBLtFnZK7//cSzBdJ/h1U4JQmb4=",
   "Source": "UcakWebProje",
   "BasePath": "_content/UcakWebProje",
   "Mode": "Default",
@@ -83,6 +83,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "C:\\Users\\dragd\\Documents\\GitHub\\UcakWebProje\\UcakWebProje\\wwwroot\\images\\home.jpg",
+      "SourceId": "UcakWebProje",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\dragd\\Documents\\GitHub\\UcakWebProje\\UcakWebProje\\wwwroot\\",
+      "BasePath": "_content/UcakWebProje",
+      "RelativePath": "images/home.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\home.jpg"
     },
     {
       "Identity": "C:\\Users\\dragd\\Documents\\GitHub\\UcakWebProje\\UcakWebProje\\wwwroot\\js\\site.js",

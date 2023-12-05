@@ -1,8 +1,40 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model UcakWebProje.Models.Bilet
+
+@{
+    ViewData["Title"] = _localization.GetKey("Home").Value;
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class ="homebg">
+    <div class="d-flex justify-content-center" style="background-image: linear-gradient(to right, rgba(140,140,140,0),rgba(180,180,180,1),rgba(140,140,140,0));">
+            <form asp-action="Index">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="departure" class="control-label"></label>
+                <select asp-for="departure" class="form-control" asp-items="ViewBag.Places"></select>
+                    <span asp-validation-for="departure" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="destination" class="control-label"></label>
+                <select asp-for="destination" class="form-control" asp-items="ViewBag.Places"></select>
+                    <span asp-validation-for="destination" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="date" class="control-label"></label>
+                    <input asp-for="date" class="form-control" />
+                    <span asp-validation-for="date" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="numberOfPassengers" class="control-label"></label>
+                    <input asp-for="numberOfPassengers" class="form-control" value = "1"/>
+                    <span asp-validation-for="numberOfPassengers" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                <input type="submit" value="@_localization.GetKey("TicketFind").Value" class="btn btn-primary" style="margin-top: 7px; margin-bottom: 7px;" />
+                </div>
+            </form>
+    </div>
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
