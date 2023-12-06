@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "TzdNQfJ9SftOyx5xDBLtFnZK7//cSzBdJ/h1U4JQmb4=",
+  "Hash": "XwcVV6vp1KwiR2N21OPGyzBx/J/po3Okz4dJojyibDg=",
   "Source": "UcakWebProje",
   "BasePath": "_content/UcakWebProje",
   "Mode": "Default",
@@ -117,6 +117,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\site.js"
+    },
+    {
+      "Identity": "C:\\Users\\dragd\\Documents\\GitHub\\UcakWebProje\\UcakWebProje\\wwwroot\\js\\sweetalert.js",
+      "SourceId": "UcakWebProje",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\dragd\\Documents\\GitHub\\UcakWebProje\\UcakWebProje\\wwwroot\\",
+      "BasePath": "_content/UcakWebProje",
+      "RelativePath": "js/sweetalert.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\sweetalert.js"
     },
     {
       "Identity": "C:\\Users\\dragd\\Documents\\GitHub\\UcakWebProje\\UcakWebProje\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",

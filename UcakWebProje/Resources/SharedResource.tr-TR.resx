@@ -117,11 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="backHome" xml:space="preserve">
+    <value>Ana Sayfa'ya Geri Git</value>
+  </data>
   <data name="Date" xml:space="preserve">
     <value>Tarih</value>
   </data>
   <data name="Enter a positive number!" xml:space="preserve">
     <value>Pozitif bir sayı giriniz!</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Hata</value>
   </data>
   <data name="From" xml:space="preserve">
     <value>Nereden</value>
@@ -146,5 +152,8 @@
   </data>
   <data name="To" xml:space="preserve">
     <value>Nereye</value>
+  </data>
+  <data name="wrongEntry" xml:space="preserve">
+    <value>Hatalı bilgi girişi!</value>
   </data>
 </root>

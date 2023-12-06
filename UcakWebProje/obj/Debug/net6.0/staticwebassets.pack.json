@@ -21,6 +21,10 @@
       "PackagePath": "staticwebassets\\js\\site.js"
     },
     {
+      "Id": "C:\\Users\\dragd\\Documents\\GitHub\\UcakWebProje\\UcakWebProje\\wwwroot\\js\\sweetalert.js",
+      "PackagePath": "staticwebassets\\js\\sweetalert.js"
+    },
+    {
       "Id": "C:\\Users\\dragd\\Documents\\GitHub\\UcakWebProje\\UcakWebProje\\wwwroot\\lib\\bootstrap\\LICENSE",
       "PackagePath": "staticwebassets\\lib\\bootstrap"
     },

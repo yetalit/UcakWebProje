@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 using UcakWebProje.Models;
 using UcakWebProje.Services;
@@ -12,6 +14,8 @@ namespace UcakWebProje.Controllers
         private readonly ILogger<HomeController> _logger;
         private LanguageService _localization;
 
+        private TravelContext tc = new TravelContext();
+
         public HomeController(ILogger<HomeController> logger, LanguageService localization)
         {
             _logger = logger;
@@ -20,6 +24,7 @@ namespace UcakWebProje.Controllers
 
         public IActionResult Index()
         {
+            ViewData["current"] = Request.Headers["Referer"].ToString();
             ViewBag.Places = new List<SelectListItem> { 
                 new SelectListItem{ Value = "Istanbul", Text = "Istanbul"},
                 new SelectListItem{ Value = "Ankara", Text = "Ankara"},
@@ -29,19 +34,40 @@ namespace UcakWebProje.Controllers
             return View();
         }
 
-        public IActionResult ChangeLanguage(string culture)
+        [HttpPost]
+        public IActionResult TicketResults()
         {
-            Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName,
-                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)), new CookieOptions()
+            ViewData["current"] = "javascript:rePost('/Home/TicketResults')";
+            var jsonObject = new JObject();
+            foreach (string name in Request.Form.Keys)
+            {
+                string value = Request.Form[name];
+                jsonObject.Add(name, value);
+            }
+            ViewData["postData"] = "'" + JsonConvert.SerializeObject(jsonObject).ToString() + "'";
+            if (ModelState.IsValid)
+            {
+                string dep = HttpContext.Request.Form["departure"];
+                string des = HttpContext.Request.Form["destination"];
+                if (dep != des)
                 {
-                    Expires = DateTimeOffset.UtcNow.AddYears(1)
-                });
-            return Redirect(Request.Headers["Referer"].ToString());
-        }
+                    try
+                    {
+                        DateTime date = DateTime.Parse(HttpContext.Request.Form["date"]);
+                        int numPssngr = int.Parse(HttpContext.Request.Form["numberOfPassengers"]);
 
-        public IActionResult Privacy()
-        {
-            return View();
+                        var t = tc.Travels.ToList();
+                        var t1 = from travel in tc.Travels
+                                 where travel.departure == dep
+                                 select travel;
+
+                        return View(t1);
+                    }
+                    catch { }
+                }
+            }
+            TempData["Error"] = 1;
+            return RedirectToAction("Index");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

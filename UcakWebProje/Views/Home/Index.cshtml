@@ -2,11 +2,18 @@
 
 @{
     ViewData["Title"] = _localization.GetKey("Home").Value;
+    if (TempData["Error"] is not null)
+    {
+        <script src="~/js/sweetalert.js"></script>
+        <script language="javascript">
+            Swal.fire({ title: '@_localization.GetKey("Error").Value', text: '@_localization.GetKey("wrongEntry").Value', icon: 'error', html: '@_localization.GetKey("wrongEntry").Value' })
+        </script>
+    }
 }
 
 <div class ="homebg">
     <div class="d-flex justify-content-center" style="background-image: linear-gradient(to right, rgba(140,140,140,0),rgba(180,180,180,1),rgba(140,140,140,0));">
-            <form asp-action="Index">
+        <form asp-action="TicketResults">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
                     <label asp-for="departure" class="control-label"></label>
