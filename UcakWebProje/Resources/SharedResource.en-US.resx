@@ -123,9 +123,6 @@
   <data name="Error" xml:space="preserve">
     <value>Oops...</value>
   </data>
-  <data name="Home" xml:space="preserve">
-    <value>Home</value>
-  </data>
   <data name="Language" xml:space="preserve">
     <value>EN</value>
   </data>

@@ -1,25 +1,20 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace UcakWebProje.Models
 {
-    public class Bilet
+    public class Bilet : Travel
     {
-        [Key]
-        [Display(Name = "From")]
-        [Required(ErrorMessage = "This field is required!")]
-        [RegularExpression("^[a-zA-Z]+$")]
-        public string departure { get; set; }
-        [Display(Name = "To")]
-        [Required(ErrorMessage = "This field is required!")]
-        [RegularExpression("^[a-zA-Z]+$")]
-        public string destination { get; set; }
-        [Display(Name = "Date")]
-        [Required(ErrorMessage = "This field is required!")]
-        public DateTime date { get; set; }
-
         [Display(Name = "Number of Passengers")]
         [Required(ErrorMessage = "This field is required!")]
         [Range(1, 500, ErrorMessage = "Enter a positive number!")]
         public int numberOfPassengers { get; set; }
+
+        [Key, ForeignKey("userName")]
+        [Display(Name = "Passenger Username")]
+        [Required(ErrorMessage = "This field is required!")]
+        [RegularExpression("^[a-zA-Z0-9]+$", ErrorMessage = "Only letters and numbers are allowed!")]
+        [MaxLength(20, ErrorMessage = "Maximum length is {1} characters!")]
+        public string passengerUN { get; set; }
     }
 }

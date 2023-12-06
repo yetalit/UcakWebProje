@@ -24,7 +24,7 @@ namespace UcakWebProje.Controllers
 
         public IActionResult Index()
         {
-            ViewData["current"] = Request.Headers["Referer"].ToString();
+            ViewData["current"] = HttpContext.Request.Path + HttpContext.Request.QueryString;
             ViewBag.Places = new List<SelectListItem> { 
                 new SelectListItem{ Value = "Istanbul", Text = "Istanbul"},
                 new SelectListItem{ Value = "Ankara", Text = "Ankara"},
@@ -56,9 +56,11 @@ namespace UcakWebProje.Controllers
                         DateTime date = DateTime.Parse(HttpContext.Request.Form["date"]);
                         int numPssngr = int.Parse(HttpContext.Request.Form["numberOfPassengers"]);
 
-                        var t = tc.Travels.ToList();
-                        var t1 = from travel in tc.Travels
-                                 where travel.departure == dep
+                        var t = tc.Ucaklar.ToList();
+                        var t1 = from travel in tc.Ucaklar
+                                 where travel.departure == dep && travel.destination == des &&
+                                 travel.date.Year == date.Year && travel.date.Month == date.Month && travel.date.Day == date.Day &&
+                                 travel.seatCount >= numPssngr
                                  select travel;
 
                         return View(t1);

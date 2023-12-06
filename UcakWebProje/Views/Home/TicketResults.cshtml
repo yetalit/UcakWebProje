@@ -1,6 +1,4 @@
-﻿@model IEnumerable<UcakWebProje.Models.Bilet>
-
-<h3 style="color:red;">@TempData["msj"]</h3>
+﻿@model IEnumerable<UcakWebProje.Models.Ucak>
 
 <table class="table">
     <thead>
@@ -11,7 +9,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.destination)
             </th>
-            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.seatCount)
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -25,6 +28,12 @@
                     @Html.DisplayFor(modelItem => item.destination)
                 </td>
                 <td>
+                    @Html.DisplayFor(modelItem => item.date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.seatCount)
+                </td>
+                <td>
                     <a asp-action="Edit" asp-route-id="@item.departure">Düzenle</a>
                 </td>
             </tr>
@@ -32,5 +41,6 @@
     </tbody>
 </table>
 <p>
-    <a class="btn btn-primary" asp-action="Index">@_localization.GetKey("backHome")</a>
+    <br />
+    <center><a class="btn btn-primary" asp-action="Index">@_localization.GetKey("backHome")</a></center>
 </p>

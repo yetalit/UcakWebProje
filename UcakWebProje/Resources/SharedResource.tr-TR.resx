@@ -117,8 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Airlines" xml:space="preserve">
+    <value>Hava Yolları Şirketi</value>
+  </data>
   <data name="backHome" xml:space="preserve">
-    <value>Ana Sayfa'ya Geri Git</value>
+    <value>Ana Sayfa'ya Dön</value>
   </data>
   <data name="Date" xml:space="preserve">
     <value>Tarih</value>
@@ -129,6 +132,9 @@
   <data name="Error" xml:space="preserve">
     <value>Hata</value>
   </data>
+  <data name="First Name" xml:space="preserve">
+    <value>Ad</value>
+  </data>
   <data name="From" xml:space="preserve">
     <value>Nereden</value>
   </data>
@@ -138,8 +144,44 @@
   <data name="Language" xml:space="preserve">
     <value>TR</value>
   </data>
+  <data name="Last Name" xml:space="preserve">
+    <value>Soyad</value>
+  </data>
+  <data name="Maximum length is {1} characters!" xml:space="preserve">
+    <value>{1} karakter maksimum uzunluktur!</value>
+  </data>
   <data name="Number of Passengers" xml:space="preserve">
     <value>Yolcu Sayısı</value>
+  </data>
+  <data name="Only letters and numbers are allowed!" xml:space="preserve">
+    <value>Sadece harfler ve rakamlar kullanılabilir!</value>
+  </data>
+  <data name="Passenger Username" xml:space="preserve">
+    <value>Yolcu Kullanıcı Adı</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Şifre</value>
+  </data>
+  <data name="Phone" xml:space="preserve">
+    <value>Telefon</value>
+  </data>
+  <data name="Please enter a valid mail address!" xml:space="preserve">
+    <value>Lütfen geçerli bir mail adresi giriniz!</value>
+  </data>
+  <data name="Please enter a valid name!" xml:space="preserve">
+    <value>Lütfen geçerli bir isim giriniz!</value>
+  </data>
+  <data name="Please enter a valid password!" xml:space="preserve">
+    <value>Lütfen geçerli bir şifre giriniz!</value>
+  </data>
+  <data name="Please enter a valid phone number!" xml:space="preserve">
+    <value>Lütfen geçerli bir telefon numarası giriniz!</value>
+  </data>
+  <data name="Price" xml:space="preserve">
+    <value>Fiyat</value>
+  </data>
+  <data name="Seat Count" xml:space="preserve">
+    <value>Koltuk Sayısı</value>
   </data>
   <data name="This field is required!" xml:space="preserve">
     <value>Bu alanı doldurmalısınız!</value>
