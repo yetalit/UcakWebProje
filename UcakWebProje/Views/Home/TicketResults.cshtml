@@ -46,7 +46,7 @@
                     @Html.DisplayFor(modelItem => item.seatCount)
                 </td>
                 <td>
-                    <a asp-action="BuyTicket" asp-route-id="@item.AirLine">@_localization.GetKey("Buy").Value</a>
+                    <a class="btn btn-success" asp-action="BuyTicket" asp-route-id="@item.AirLine">@_localization.GetKey("Buy").Value</a>
                 </td>
             </tr>
         }
