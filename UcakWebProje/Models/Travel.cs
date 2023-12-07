@@ -23,11 +23,6 @@ namespace UcakWebProje.Models
         [Required(ErrorMessage = "This field is required!")]
         public DateTime date { get; set; }
 
-        [Display(Name = "Price")]
-        [Required(ErrorMessage = "This field is required!")]
-        [Range(1, int.MaxValue, ErrorMessage = "Enter a positive number!")]
-        public int Price { get; set; }
-
         [Key]
         [Display(Name = "Airlines")]
         [Required(ErrorMessage = "This field is required!")]

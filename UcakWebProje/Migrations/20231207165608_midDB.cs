@@ -10,13 +10,20 @@ namespace UcakWebProje.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-
+            migrationBuilder.DropColumn(
+                name: "Price",
+                table: "Biletler");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-
+            migrationBuilder.AddColumn<int>(
+                name: "Price",
+                table: "Biletler",
+                type: "int",
+                nullable: false,
+                defaultValue: 0);
         }
     }
 }

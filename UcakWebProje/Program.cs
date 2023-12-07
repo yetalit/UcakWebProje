@@ -9,6 +9,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddSession(options => {
+    options.IdleTimeout = TimeSpan.FromMinutes(45);
+});
+
 builder.Services.AddSingleton<LanguageService>();
 builder.Services.AddLocalization(ops => ops.ResourcesPath = "Resources");
 builder.Services.AddMvc().AddViewLocalization().AddDataAnnotationsLocalization(ops => ops.DataAnnotationLocalizerProvider = (type, factory) =>
@@ -46,6 +50,8 @@ app.UseStaticFiles();
 app.UseRequestLocalization(app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
 
 app.UseRouting();
+
+app.UseSession();
 
 app.UseAuthorization();
 

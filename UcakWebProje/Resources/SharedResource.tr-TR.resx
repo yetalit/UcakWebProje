@@ -129,6 +129,9 @@
   <data name="Date" xml:space="preserve">
     <value>Tarih</value>
   </data>
+  <data name="Enter a number between 1 to 500!" xml:space="preserve">
+    <value>1 ila 500 arası bir sayı giriniz!</value>
+  </data>
   <data name="Enter a positive number!" xml:space="preserve">
     <value>Pozitif bir sayı giriniz!</value>
   </data>
@@ -189,8 +192,14 @@
   <data name="Seat Count" xml:space="preserve">
     <value>Koltuk Sayısı</value>
   </data>
+  <data name="Seats Remaining" xml:space="preserve">
+    <value>Kalan Koltuk</value>
+  </data>
   <data name="This field is required!" xml:space="preserve">
     <value>Bu alanı doldurmalısınız!</value>
+  </data>
+  <data name="Ticket Results" xml:space="preserve">
+    <value>Bilet Sonuçları</value>
   </data>
   <data name="TicketFind" xml:space="preserve">
     <value>Bilet Bul</value>

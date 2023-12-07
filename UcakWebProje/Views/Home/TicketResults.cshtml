@@ -1,5 +1,9 @@
 ﻿@model IEnumerable<UcakWebProje.Models.Ucak>
 
+@{
+    ViewData["Title"] = _localization.GetKey("Ticket Results").Value;
+}
+
 <table class="table">
     <thead>
         <tr>
@@ -19,7 +23,7 @@
                 @Html.DisplayNameFor(model => model.Price)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.seatCount)
+                @_localization.GetKey("Seats Remaining").Value
             </th>
         </tr>
     </thead>
@@ -46,7 +50,7 @@
                     @Html.DisplayFor(modelItem => item.seatCount)
                 </td>
                 <td>
-                    <a class="btn btn-success" asp-action="BuyTicket" asp-route-id="@item.AirLine">@_localization.GetKey("Buy").Value</a>
+                    <a class="btn btn-success" href="/Home/BuyTicket?departure=@item.departure&&destination=@item.destination&&date=@item.date&&AirLine=@item.AirLine&&numberOfPassengers=@ViewData["numberOfPassengers"]">@_localization.GetKey("Buy").Value</a>
                 </td>
             </tr>
         }

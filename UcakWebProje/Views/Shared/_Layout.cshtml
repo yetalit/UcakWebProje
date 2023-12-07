@@ -11,6 +11,10 @@
 <body>
     <header>
         @{
+            if (ViewData["current"] is null)
+            {
+                ViewData["current"] = "#";
+            }
             if (ViewData["postData"] is null) {
                 ViewData["postData"] = "'[]'";
             }

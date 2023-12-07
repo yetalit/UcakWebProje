@@ -43,9 +43,6 @@ namespace UcakWebProje.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<int>("Price")
-                        .HasColumnType("int");
-
                     b.Property<int>("numberOfPassengers")
                         .HasColumnType("int");
 

@@ -12,7 +12,7 @@ using UcakWebProje.Models;
 namespace UcakWebProje.Migrations
 {
     [DbContext(typeof(TravelContext))]
-    [Migration("20231206165335_midDB")]
+    [Migration("20231207165608_midDB")]
     partial class midDB
     {
         /// <inheritdoc />
@@ -45,9 +45,6 @@ namespace UcakWebProje.Migrations
                     b.Property<string>("passengerUN")
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
-
-                    b.Property<int>("Price")
-                        .HasColumnType("int");
 
                     b.Property<int>("numberOfPassengers")
                         .HasColumnType("int");

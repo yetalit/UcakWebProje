@@ -34,27 +34,19 @@ namespace UcakWebProje.Controllers
             return View();
         }
 
-        [HttpPost]
         public IActionResult TicketResults()
         {
-            ViewData["current"] = "javascript:rePost('/Home/TicketResults')";
-            var jsonObject = new JObject();
-            foreach (string name in Request.Form.Keys)
-            {
-                string value = Request.Form[name];
-                jsonObject.Add(name, value);
-            }
-            ViewData["postData"] = "'" + JsonConvert.SerializeObject(jsonObject).ToString() + "'";
+            ViewData["current"] = HttpContext.Request.Path + HttpContext.Request.QueryString;
             if (ModelState.IsValid)
             {
-                string dep = HttpContext.Request.Form["departure"];
-                string des = HttpContext.Request.Form["destination"];
+                string dep = HttpContext.Request.Query["departure"];
+                string des = HttpContext.Request.Query["destination"];
                 if (dep != des)
                 {
                     try
                     {
-                        DateTime date = DateTime.Parse(HttpContext.Request.Form["date"]);
-                        int numPssngr = int.Parse(HttpContext.Request.Form["numberOfPassengers"]);
+                        DateTime date = DateTime.Parse(HttpContext.Request.Query["date"]);
+                        int numPssngr = int.Parse(HttpContext.Request.Query["numberOfPassengers"]);
 
                         var t = tc.Ucaklar.ToList();
                         var t1 = from travel in tc.Ucaklar
@@ -63,11 +55,65 @@ namespace UcakWebProje.Controllers
                                  travel.seatCount >= numPssngr
                                  select travel;
 
+                        ViewData["numberOfPassengers"] = numPssngr;
                         return View(t1);
                     }
                     catch { }
                 }
             }
+            TempData["Error"] = 1;
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult BuyTicket ()
+        {
+            try
+            {
+                string dep = HttpContext.Request.Query["departure"];
+                string des = HttpContext.Request.Query["destination"];
+                string airLine = HttpContext.Request.Query["AirLine"];
+                if (dep is not null && des is not null && airLine is not null)
+                {
+                    DateTime date = DateTime.Parse(HttpContext.Request.Query["date"]);
+                    int numPssngr = int.Parse(HttpContext.Request.Query["numberOfPassengers"]);
+                    //
+                    HttpContext.Session.SetString("userSession", "mmm");
+                    //
+                    string passengerUN = HttpContext.Session.GetString("userSession");
+                    if (passengerUN is null)
+                    {
+                        // Must Login
+                    }
+                    else
+                    {
+                        var t = tc.Ucaklar.ToList();
+                        var tquery = from travel in tc.Ucaklar
+                                 where travel.departure == dep && travel.destination == des && travel.date > DateTime.Now && travel.date == date &&
+                                 travel.AirLine == airLine && travel.seatCount >= numPssngr
+                                 select travel;
+                        if (tquery.Count() == 1)
+                        {
+                            var t1 = tquery.First();
+                            var k1 = tc.Kullanicilar.ToList().First(user => user.UserName == passengerUN);
+
+                            tc.Add(new Bilet { 
+                                departure = t1.departure,
+                                destination = t1.destination,
+                                date = t1.date,
+                                AirLine = t1.AirLine,
+                                numberOfPassengers = numPssngr,
+                                passengerUN = k1.UserName
+                            });
+                            t1.seatCount -= numPssngr;
+                            tc.Update(t1);
+                            tc.SaveChanges();
+                            ////////////////////////
+                            return RedirectToAction("Index");
+                        }
+                    }
+                }
+            }
+            catch { }
             TempData["Error"] = 1;
             return RedirectToAction("Index");
         }

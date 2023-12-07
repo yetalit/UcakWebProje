@@ -7,7 +7,7 @@ namespace UcakWebProje.Models
     {
         [Display(Name = "Number of Passengers")]
         [Required(ErrorMessage = "This field is required!")]
-        [Range(1, 500, ErrorMessage = "Enter a positive number!")]
+        [Range(1, 500, ErrorMessage = "Enter a number between 1 to 500!")]
         public int numberOfPassengers { get; set; }
 
         [Key, ForeignKey("userName")]
