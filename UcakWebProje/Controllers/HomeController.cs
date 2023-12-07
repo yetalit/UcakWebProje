@@ -58,7 +58,7 @@ namespace UcakWebProje.Controllers
 
                         var t = tc.Ucaklar.ToList();
                         var t1 = from travel in tc.Ucaklar
-                                 where travel.departure == dep && travel.destination == des &&
+                                 where travel.departure == dep && travel.destination == des && travel.date > DateTime.Now &&
                                  travel.date.Year == date.Year && travel.date.Month == date.Month && travel.date.Day == date.Day &&
                                  travel.seatCount >= numPssngr
                                  select travel;

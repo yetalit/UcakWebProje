@@ -120,11 +120,17 @@
   <data name="backHome" xml:space="preserve">
     <value>Back to Home</value>
   </data>
+  <data name="Buy" xml:space="preserve">
+    <value>Buy Ticket</value>
+  </data>
   <data name="Error" xml:space="preserve">
     <value>Oops...</value>
   </data>
   <data name="Language" xml:space="preserve">
     <value>EN</value>
+  </data>
+  <data name="ResultNotFound" xml:space="preserve">
+    <value>Nothing found based on the information entered!</value>
   </data>
   <data name="TicketFind" xml:space="preserve">
     <value>Find Ticket</value>

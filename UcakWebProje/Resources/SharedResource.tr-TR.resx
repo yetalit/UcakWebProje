@@ -123,6 +123,9 @@
   <data name="backHome" xml:space="preserve">
     <value>Ana Sayfa'ya Dön</value>
   </data>
+  <data name="Buy" xml:space="preserve">
+    <value>Satın Al</value>
+  </data>
   <data name="Date" xml:space="preserve">
     <value>Tarih</value>
   </data>
@@ -179,6 +182,9 @@
   </data>
   <data name="Price" xml:space="preserve">
     <value>Fiyat</value>
+  </data>
+  <data name="ResultNotFound" xml:space="preserve">
+    <value>Herhangi bir sonuç bulunamadı!</value>
   </data>
   <data name="Seat Count" xml:space="preserve">
     <value>Koltuk Sayısı</value>
