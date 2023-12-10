@@ -16,7 +16,8 @@ namespace UcakWebProje.Models
                 table.destination,
                 table.date,
                 table.AirLine,
-                table.passengerUN
+                table.passengerUN,
+                table.orderTime
             });
             builder.Entity<Ucak>().HasKey(table => new {
                 table.departure,

@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System.Diagnostics;
+using System.Globalization;
 using UcakWebProje.Models;
 using UcakWebProje.Services;
 
@@ -24,6 +23,11 @@ namespace UcakWebProje.Controllers
 
         public IActionResult Index()
         {
+            if (HttpContext.Request.Cookies["travel"] is not null)
+            {
+                HttpContext.Response.Cookies.Delete("travel");
+            }
+
             ViewData["current"] = HttpContext.Request.Path + HttpContext.Request.QueryString;
             ViewBag.Places = new List<SelectListItem> { 
                 new SelectListItem{ Value = "Istanbul", Text = "Istanbul"},
@@ -36,7 +40,13 @@ namespace UcakWebProje.Controllers
 
         public IActionResult TicketResults()
         {
+            if (HttpContext.Request.Cookies["travel"] is not null)
+            {
+                HttpContext.Response.Cookies.Delete("travel");
+            }
+
             ViewData["current"] = HttpContext.Request.Path + HttpContext.Request.QueryString;
+
             if (ModelState.IsValid)
             {
                 string dep = HttpContext.Request.Query["departure"];
@@ -69,44 +79,46 @@ namespace UcakWebProje.Controllers
         {
             try
             {
-                string dep = HttpContext.Request.Query["departure"];
-                string des = HttpContext.Request.Query["destination"];
-                string airLine = HttpContext.Request.Query["AirLine"];
-                if (dep is not null && des is not null && airLine is not null)
+                Bilet ticket = JsonConvert.DeserializeObject<Bilet>(HttpContext.Request.Cookies["travel"]);
+                if (ticket.departure is not null && ticket.destination is not null && ticket.AirLine is not null)
                 {
-                    DateTime date = DateTime.Parse(HttpContext.Request.Query["date"]);
-                    int numPssngr = int.Parse(HttpContext.Request.Query["numberOfPassengers"]);
+                    DateTime date = DateTime.Parse(ticket.date.ToString(CultureInfo.GetCultureInfo("en-US")));
                     //
                     HttpContext.Session.SetString("userSession", "mmm");
                     //
                     string passengerUN = HttpContext.Session.GetString("userSession");
                     if (passengerUN is null)
                     {
-                        // Must Login
+                        TempData["loginAlert"] = 1;
+                        return RedirectToAction("Login");
                     }
                     else
                     {
                         var t = tc.Ucaklar.ToList();
                         var tquery = from travel in tc.Ucaklar
-                                 where travel.departure == dep && travel.destination == des && travel.date > DateTime.Now && travel.date == date &&
-                                 travel.AirLine == airLine && travel.seatCount >= numPssngr
-                                 select travel;
+                                     where travel.departure == ticket.departure && travel.destination == ticket.destination &&
+                                     travel.date == date && travel.date > DateTime.Now &&
+                                     travel.AirLine == ticket.AirLine && travel.seatCount >= ticket.numberOfPassengers
+                                     select travel;
                         if (tquery.Count() == 1)
                         {
                             var t1 = tquery.First();
                             var k1 = tc.Kullanicilar.ToList().First(user => user.UserName == passengerUN);
 
-                            tc.Add(new Bilet { 
+                            tc.Add(new Bilet
+                            {
                                 departure = t1.departure,
                                 destination = t1.destination,
                                 date = t1.date,
                                 AirLine = t1.AirLine,
-                                numberOfPassengers = numPssngr,
-                                passengerUN = k1.UserName
+                                numberOfPassengers = ticket.numberOfPassengers,
+                                passengerUN = k1.UserName,
+                                orderTime = DateTime.Now
                             });
-                            t1.seatCount -= numPssngr;
+                            t1.seatCount -= ticket.numberOfPassengers;
                             tc.Update(t1);
                             tc.SaveChanges();
+                            HttpContext.Response.Cookies.Delete("travel");
                             ////////////////////////
                             return RedirectToAction("Index");
                         }
@@ -116,6 +128,25 @@ namespace UcakWebProje.Controllers
             catch { }
             TempData["Error"] = 1;
             return RedirectToAction("Index");
+        }
+
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        public IActionResult SignUp()
+        {
+            return View();
+        }
+
+        public IActionResult MyTickets()
+        {
+            if (HttpContext.Request.Cookies["travel"] is not null)
+            {
+                return RedirectToAction("BuyTicket");
+            }
+            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

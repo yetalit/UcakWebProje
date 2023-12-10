@@ -15,27 +15,14 @@
             {
                 ViewData["current"] = "#";
             }
-            if (ViewData["postData"] is null) {
-                ViewData["postData"] = "'[]'";
-            }
         }
         <script language="javascript">
             function setCookie(cname, cvalue, exdays) {
                 const d = new Date();
                 d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+                _cvalue = encodeURIComponent(cvalue);
                 let expires = "expires=" + d.toUTCString();
-                document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-            }
-            function rePost(_url) {
-                var json = $.parseJSON(@Html.Raw(ViewData["postData"].ToString()))
-                $.ajax({
-                    type: "POST",
-                    url: _url,
-                    data: json,
-                    success: function () {
-                        location.reload();
-                    }
-                });
+                document.cookie = cname + "=" + _cvalue + ";" + expires + ";path = /";
             }
         </script>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
@@ -62,13 +49,13 @@
                                 </button>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a onclick="setCookie('.AspNetCore.Culture', 'c%3Den-US%7Cuic%3Den-US', 365)" href="@ViewData["current"].ToString()"
+                                        <a onclick="setCookie('.AspNetCore.Culture', 'c=en-US|uic=en-US', 365)" href="@ViewData["current"].ToString()"
                                            class="dropdown-item">
                                             <i class="flag-icon flag-icon-gb"></i> English
                                         </a>
                                     </li>
                                     <li>
-                                        <a onclick="setCookie('.AspNetCore.Culture', 'c%3Dtr-TR%7Cuic%3Dtr-TR', 365)" href="@ViewData["current"].ToString()"
+                                        <a onclick="setCookie('.AspNetCore.Culture', 'c=tr-TR|uic=tr-TR', 365)" href="@ViewData["current"].ToString()"
                                            class="dropdown-item">
                                             <i class="flag-icon flag-icon-gb"></i> Türkçe
                                         </a>

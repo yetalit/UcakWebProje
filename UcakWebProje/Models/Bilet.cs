@@ -16,5 +16,10 @@ namespace UcakWebProje.Models
         [RegularExpression("^[a-zA-Z0-9]+$", ErrorMessage = "Only letters and numbers are allowed!")]
         [MaxLength(20, ErrorMessage = "Maximum length is {1} characters!")]
         public string passengerUN { get; set; }
+
+        [Key]
+        [Display(Name = "Order Time")]
+        [Required(ErrorMessage = "This field is required!")]
+        public DateTime orderTime { get; set; }
     }
 }

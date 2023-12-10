@@ -162,6 +162,9 @@
   <data name="Only letters and numbers are allowed!" xml:space="preserve">
     <value>Sadece harfler ve rakamlar kullanılabilir!</value>
   </data>
+  <data name="Order Time" xml:space="preserve">
+    <value>Satış Tarihi</value>
+  </data>
   <data name="Passenger Username" xml:space="preserve">
     <value>Yolcu Kullanıcı Adı</value>
   </data>

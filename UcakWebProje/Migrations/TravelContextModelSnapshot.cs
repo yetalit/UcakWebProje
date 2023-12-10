@@ -43,10 +43,13 @@ namespace UcakWebProje.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
+                    b.Property<DateTime>("orderTime")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("numberOfPassengers")
                         .HasColumnType("int");
 
-                    b.HasKey("departure", "destination", "date", "AirLine", "passengerUN");
+                    b.HasKey("departure", "destination", "date", "AirLine", "passengerUN", "orderTime");
 
                     b.ToTable("Biletler");
                 });
