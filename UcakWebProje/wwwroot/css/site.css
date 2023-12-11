@@ -13,10 +13,6 @@ html {
   min-height: 100%;
 }
 
-body {
-
-}
-
 .homebg {
     background-image: url('../images/home.jpg');
     background-size: cover;
@@ -27,4 +23,29 @@ body {
     height: -webkit-calc(100% - 118px);
     height: -moz-calc(100% - 118px);
     height: calc(100% - 118px);
+}
+
+footer {
+    background-color: white;
+}
+
+.userForm {
+    margin-left: 40%;
+    margin-left: -webkit-calc(50% - 120px);
+    margin-left: -moz-calc(50% - 120px);
+    margin-left: calc(50% - 120px);
+}
+
+.particles-js-canvas-el {
+    position: fixed;
+    z-index: -2;
+}
+
+#particles-js {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    background-color: white;
+    background-size: cover;
+    background-repeat: no-repeat;
 }

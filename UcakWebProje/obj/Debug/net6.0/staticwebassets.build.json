@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "XwcVV6vp1KwiR2N21OPGyzBx/J/po3Okz4dJojyibDg=",
+  "Hash": "u561WVyB3d+EnXrsm9VFDjJP+C9+WO/xKbf1D3ZPsxU=",
   "Source": "UcakWebProje",
   "BasePath": "_content/UcakWebProje",
   "Mode": "Default",
@@ -100,6 +100,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\home.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\dragd\\Documents\\GitHub\\UcakWebProje\\UcakWebProje\\wwwroot\\js\\particles.js",
+      "SourceId": "UcakWebProje",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\dragd\\Documents\\GitHub\\UcakWebProje\\UcakWebProje\\wwwroot\\",
+      "BasePath": "_content/UcakWebProje",
+      "RelativePath": "js/particles.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\particles.js"
     },
     {
       "Identity": "C:\\Users\\dragd\\Documents\\GitHub\\UcakWebProje\\UcakWebProje\\wwwroot\\js\\site.js",
@@ -1103,6 +1120,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt"
+    },
+    {
+      "Identity": "C:\\Users\\dragd\\Documents\\GitHub\\UcakWebProje\\UcakWebProje\\wwwroot\\particles.json",
+      "SourceId": "UcakWebProje",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\dragd\\Documents\\GitHub\\UcakWebProje\\UcakWebProje\\wwwroot\\",
+      "BasePath": "_content/UcakWebProje",
+      "RelativePath": "particles.json",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\particles.json"
     }
   ]
 }

@@ -17,6 +17,10 @@
       "PackagePath": "staticwebassets\\images\\home.jpg"
     },
     {
+      "Id": "C:\\Users\\dragd\\Documents\\GitHub\\UcakWebProje\\UcakWebProje\\wwwroot\\js\\particles.js",
+      "PackagePath": "staticwebassets\\js\\particles.js"
+    },
+    {
       "Id": "C:\\Users\\dragd\\Documents\\GitHub\\UcakWebProje\\UcakWebProje\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },
@@ -251,6 +255,10 @@
     {
       "Id": "C:\\Users\\dragd\\Documents\\GitHub\\UcakWebProje\\UcakWebProje\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
+    },
+    {
+      "Id": "C:\\Users\\dragd\\Documents\\GitHub\\UcakWebProje\\UcakWebProje\\wwwroot\\particles.json",
+      "PackagePath": "staticwebassets\\particles.json"
     },
     {
       "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.UcakWebProje.Microsoft.AspNetCore.StaticWebAssets.props",

@@ -12,7 +12,7 @@ using UcakWebProje.Models;
 namespace UcakWebProje.Migrations
 {
     [DbContext(typeof(TravelContext))]
-    [Migration("20231210162947_finalDB")]
+    [Migration("20231211001127_finalDB")]
     partial class finalDB
     {
         /// <inheritdoc />
@@ -108,8 +108,8 @@ namespace UcakWebProje.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.Property<string>("phoneNum")
                         .IsRequired()

@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
+using System.Security.Cryptography;
+using System.Text;
 using UcakWebProje.Models;
 using UcakWebProje.Services;
 
@@ -82,10 +85,7 @@ namespace UcakWebProje.Controllers
                 Bilet ticket = JsonConvert.DeserializeObject<Bilet>(HttpContext.Request.Cookies["travel"]);
                 if (ticket.departure is not null && ticket.destination is not null && ticket.AirLine is not null)
                 {
-                    DateTime date = DateTime.Parse(ticket.date.ToString(CultureInfo.GetCultureInfo("en-US")));
-                    //
-                    HttpContext.Session.SetString("userSession", "mmm");
-                    //
+                    ticket.date = DateTime.Parse(ticket.date.ToString(CultureInfo.GetCultureInfo("en-US")));
                     string passengerUN = HttpContext.Session.GetString("userSession");
                     if (passengerUN is null)
                     {
@@ -97,7 +97,7 @@ namespace UcakWebProje.Controllers
                         var t = tc.Ucaklar.ToList();
                         var tquery = from travel in tc.Ucaklar
                                      where travel.departure == ticket.departure && travel.destination == ticket.destination &&
-                                     travel.date == date && travel.date > DateTime.Now &&
+                                     travel.date == ticket.date && travel.date > DateTime.Now &&
                                      travel.AirLine == ticket.AirLine && travel.seatCount >= ticket.numberOfPassengers
                                      select travel;
                         if (tquery.Count() == 1)
@@ -120,7 +120,7 @@ namespace UcakWebProje.Controllers
                             tc.SaveChanges();
                             HttpContext.Response.Cookies.Delete("travel");
                             ////////////////////////
-                            return RedirectToAction("Index");
+                            return RedirectToAction("MyTickets");
                         }
                     }
                 }
@@ -132,12 +132,102 @@ namespace UcakWebProje.Controllers
 
         public IActionResult Login()
         {
+            if (HttpContext.Session.GetString("userSession") is not null)
+            {
+                return RedirectToAction("Index");
+            }
+            ViewData["current"] = HttpContext.Request.Path + HttpContext.Request.QueryString;
             return View();
+        }
+        [HttpPost]
+        public IActionResult LoginCheck ()
+        {
+            if (HttpContext.Session.GetString("userSession") is not null)
+            {
+                return RedirectToAction("Index");
+            }
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    StringBuilder sb = new StringBuilder();
+                    using (SHA256 sha256Hash = SHA256.Create())
+                    {
+                        byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(HttpContext.Request.Form["Password"].ToString()));
+
+                        for (int i = 0; i < bytes.Length; i++)
+                        {
+                            sb.Append(bytes[i].ToString("x2"));
+                        }
+                    }
+                    var k = tc.Kullanicilar.ToList();
+                    var u = from user in tc.Kullanicilar
+                            where user.UserName == HttpContext.Request.Form["UserName"].ToString() &&
+                            user.Password == sb.ToString()
+                            select user;
+                    HttpContext.Session.SetString("userSession", u.First().UserName);
+                    return RedirectToAction("MyTickets");
+                }
+                catch {
+                    TempData["loginFailed"] = 1;
+                    return RedirectToAction("Login");
+                }
+            }
+            TempData["Error"] = 1;
+            return RedirectToAction("Index");
         }
 
         public IActionResult SignUp()
         {
+            if (HttpContext.Session.GetString("userSession") is not null)
+            {
+                return RedirectToAction("Index");
+            }
+            ViewData["current"] = HttpContext.Request.Path + HttpContext.Request.QueryString;
             return View();
+        }
+        [HttpPost]
+        public IActionResult SignUpCheck ()
+        {
+            if (HttpContext.Session.GetString("userSession") is not null)
+            {
+                return RedirectToAction("Index");
+            }
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    StringBuilder sb = new StringBuilder();
+                    using (SHA256 sha256Hash = SHA256.Create())
+                    {
+                        byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(HttpContext.Request.Form["Password"].ToString()));
+
+                        for (int i = 0; i < bytes.Length; i++)
+                        {
+                            sb.Append(bytes[i].ToString("x2"));
+                        }
+                    }
+                    tc.Add(new User()
+                    {
+                        UserName = HttpContext.Request.Form["UserName"].ToString(),
+                        Password = sb.ToString(),
+                        FirstName = HttpContext.Request.Form["FirstName"].ToString(),
+                        LastName = HttpContext.Request.Form["LastName"].ToString(),
+                        Mail = HttpContext.Request.Form["Mail"].ToString(),
+                        phoneNum = HttpContext.Request.Form["phoneNum"].ToString()
+                    });
+                    tc.SaveChanges();
+                    HttpContext.Session.SetString("userSession", HttpContext.Request.Form["UserName"].ToString());
+                    return RedirectToAction("MyTickets");
+                }
+                catch
+                {
+                    TempData["signupFailed"] = 1;
+                    return RedirectToAction("SignUp");
+                }
+            }
+            TempData["Error"] = 1;
+            return RedirectToAction("Index");
         }
 
         public IActionResult MyTickets()
@@ -146,6 +236,11 @@ namespace UcakWebProje.Controllers
             {
                 return RedirectToAction("BuyTicket");
             }
+            if (HttpContext.Session.GetString("userSession") is null)
+            {
+                return RedirectToAction("Login");
+            }
+            ViewData["current"] = HttpContext.Request.Path + HttpContext.Request.QueryString;
             return View();
         }
 

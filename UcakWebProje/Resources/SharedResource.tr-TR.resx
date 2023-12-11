@@ -153,6 +153,15 @@
   <data name="Last Name" xml:space="preserve">
     <value>Soyad</value>
   </data>
+  <data name="Login" xml:space="preserve">
+    <value>Giriş</value>
+  </data>
+  <data name="Login Failed" xml:space="preserve">
+    <value>Giriş Başarısız</value>
+  </data>
+  <data name="loginBuy" xml:space="preserve">
+    <value>bilet satın alabilmek için</value>
+  </data>
   <data name="Maximum length is {1} characters!" xml:space="preserve">
     <value>{1} karakter maksimum uzunluktur!</value>
   </data>
@@ -162,8 +171,14 @@
   <data name="Only letters and numbers are allowed!" xml:space="preserve">
     <value>Sadece harfler ve rakamlar kullanılabilir!</value>
   </data>
+  <data name="Or" xml:space="preserve">
+    <value>Veya</value>
+  </data>
   <data name="Order Time" xml:space="preserve">
     <value>Satış Tarihi</value>
+  </data>
+  <data name="otherUser" xml:space="preserve">
+    <value>Başka bir kullanıcı adı giriniz</value>
   </data>
   <data name="Passenger Username" xml:space="preserve">
     <value>Yolcu Kullanıcı Adı</value>
@@ -186,6 +201,9 @@
   <data name="Please enter a valid phone number!" xml:space="preserve">
     <value>Lütfen geçerli bir telefon numarası giriniz!</value>
   </data>
+  <data name="pLogin" xml:space="preserve">
+    <value>Giriş Yapınız</value>
+  </data>
   <data name="Price" xml:space="preserve">
     <value>Fiyat</value>
   </data>
@@ -197,6 +215,9 @@
   </data>
   <data name="Seats Remaining" xml:space="preserve">
     <value>Kalan Koltuk</value>
+  </data>
+  <data name="SignUp" xml:space="preserve">
+    <value>Kayıt Ol</value>
   </data>
   <data name="This field is required!" xml:space="preserve">
     <value>Bu alanı doldurmalısınız!</value>
@@ -212,6 +233,12 @@
   </data>
   <data name="To" xml:space="preserve">
     <value>Nereye</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>Kullanıcı Adı</value>
+  </data>
+  <data name="uTaken" xml:space="preserve">
+    <value>Kullanıcı adı alınmış!</value>
   </data>
   <data name="wrongEntry" xml:space="preserve">
     <value>Hatalı bilgi girişi!</value>

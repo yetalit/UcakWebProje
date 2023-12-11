@@ -1,0 +1,53 @@
+﻿@model UcakWebProje.Models.User
+
+@{
+    ViewData["Title"] = _localization.GetKey("Login").Value;
+    <script src="~/js/sweetalert.js"></script>
+    if (TempData["loginAlert"] is not null)
+    {
+        <script language="javascript">
+            Swal.fire({ title: '@_localization.GetKey("pLogin").Value', text: '@_localization.GetKey("loginBuy").Value', icon: 'info', html: '@_localization.GetKey("loginBuy").Value' })
+        </script>
+    }
+    if (TempData["loginFailed"] is not null)
+    {
+        <script language="javascript">
+            Swal.fire({ title: '@_localization.GetKey("Login Failed").Value', text: '@_localization.GetKey("wrongEntry").Value', icon: 'error', html: '@_localization.GetKey("wrongEntry").Value' })
+        </script>
+    }
+}
+
+<script src="~/js/particles.js">
+</script>
+<script language="javascript">
+    particlesJS.load('particles-js', '/particles.json', function () {
+        console.log('particles.js loaded');
+    });
+</script>
+
+<div id="particles-js"></div>
+<div class="userForm" style="margin-top:10px; z-index: 1; position: absolute; background-color:white">
+    <form asp-action="LoginCheck">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="UserName" class="control-label"></label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="@_localization.GetKey("Login").Value" class="btn btn-primary" style="margin-top: 7px; margin-bottom: 7px;" />
+            </div>
+        </form>
+    @_localization.GetKey("Or").Value
+        <br />
+    <a class="btn btn-secondary" asp-action="SignUp">@_localization.GetKey("SignUp").Value</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

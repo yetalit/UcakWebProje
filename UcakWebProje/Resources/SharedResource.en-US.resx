@@ -129,6 +129,15 @@
   <data name="Language" xml:space="preserve">
     <value>EN</value>
   </data>
+  <data name="loginBuy" xml:space="preserve">
+    <value>in order to purchase a ticket</value>
+  </data>
+  <data name="otherUser" xml:space="preserve">
+    <value>Please enter another username</value>
+  </data>
+  <data name="pLogin" xml:space="preserve">
+    <value>Please Login</value>
+  </data>
   <data name="ResultNotFound" xml:space="preserve">
     <value>Nothing found based on the information entered!</value>
   </data>
@@ -137,6 +146,9 @@
   </data>
   <data name="Title" xml:space="preserve">
     <value>Flight Reservation</value>
+  </data>
+  <data name="uTaken" xml:space="preserve">
+    <value>Username is taken!</value>
   </data>
   <data name="wrongEntry" xml:space="preserve">
     <value>Wrong information entered!</value>
