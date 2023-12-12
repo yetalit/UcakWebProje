@@ -186,9 +186,6 @@
   <data name="otherUser" xml:space="preserve">
     <value>Başka bir kullanıcı adı giriniz</value>
   </data>
-  <data name="Panel" xml:space="preserve">
-    <value>Paneli</value>
-  </data>
   <data name="Passenger Username" xml:space="preserve">
     <value>Yolcu Kullanıcı Adı</value>
   </data>

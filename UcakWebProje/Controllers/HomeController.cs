@@ -108,7 +108,6 @@ namespace UcakWebProje.Controllers
                     ticket.date = DateTime.Parse(ticket.date.ToString(CultureInfo.GetCultureInfo("en-US")));
                     if (HttpContext.User != null && HttpContext.User.Identity.IsAuthenticated)
                     {
-                        var t = tc.Ucaklar.ToList();
                         var tquery = from travel in tc.Ucaklar
                                      where travel.departure == ticket.departure && travel.destination == ticket.destination &&
                                      travel.date == ticket.date && travel.date > DateTime.Now &&

@@ -7,6 +7,84 @@
     {
         Layout = "/Areas/Identity/Pages/_Layout.cshtml";
     }
+    ViewData["Title"] = "Panel";
+
+    TravelContext tc = new TravelContext(new Microsoft.EntityFrameworkCore.DbContextOptions<TravelContext>());
+
+    if (User.IsInRole("Admin"))
+    {
+        <p>admin panel</p>
+    }
+    else if (User.IsInRole("Staff"))
+    {
+        <p>staff panel</p>
+    }
+    else
+    {
+        var tquery = (from travel in tc.Biletler
+                     where travel.passengerUN == User.Identity.Name
+                     select travel).ToList();
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @_localization.GetKey("From").Value
+                    </th>
+                    <th>
+                        @_localization.GetKey("To").Value
+                    </th>
+                    <th>
+                        @_localization.GetKey("Date").Value
+                    </th>
+                    <th>
+                        @_localization.GetKey("Airlines").Value
+                    </th>
+                    <th>
+                        @_localization.GetKey("Number of Passengers").Value
+                    </th>
+                    <th>
+                        @_localization.GetKey("Price").Value
+                    </th>
+                    <th>
+                        @_localization.GetKey("Order Time").Value
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in tquery)
+                {
+                    string price = (from travel in tc.Ucaklar
+                                    where travel.departure == item.departure && travel.destination == item.destination &&
+                                    travel.date == item.date && travel.AirLine == item.AirLine
+                                    select travel).ToList().FirstOrDefault().Price.ToString();
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.departure)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.destination)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.date)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AirLine)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.numberOfPassengers)
+                        </td>
+                        <td>
+                            @price TL
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.orderTime)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
 }
 
 @section Scripts {

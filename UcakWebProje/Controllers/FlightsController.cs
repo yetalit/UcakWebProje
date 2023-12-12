@@ -16,7 +16,6 @@ namespace UcakWebProje.Controllers
         [HttpGet]
         public IEnumerable<Ucak> Get(string dep, string des, DateTime date, int numPssngr)
         {
-            var t = tc.Ucaklar.ToList();
             var t1 = from travel in tc.Ucaklar
                      where travel.departure == dep && travel.destination == des && travel.date > DateTime.Now &&
                      travel.date.Year == date.Year && travel.date.Month == date.Month && travel.date.Day == date.Day &&
