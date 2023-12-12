@@ -31,9 +31,9 @@ footer {
 
 .userForm {
     margin-left: 40%;
-    margin-left: -webkit-calc(50% - 120px);
-    margin-left: -moz-calc(50% - 120px);
-    margin-left: calc(50% - 120px);
+    margin-left: -webkit-calc(50% - 130px);
+    margin-left: -moz-calc(50% - 130px);
+    margin-left: calc(50% - 130px);
 }
 
 .particles-js-canvas-el {

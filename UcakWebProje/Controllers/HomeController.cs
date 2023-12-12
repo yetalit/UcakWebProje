@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.Diagnostics;
@@ -8,6 +9,8 @@ using System.Security.Cryptography;
 using System.Text;
 using UcakWebProje.Models;
 using UcakWebProje.Services;
+using UcakWebProje.Areas.Identity.Data;
+using Microsoft.AspNetCore.Identity;
 
 namespace UcakWebProje.Controllers
 {
@@ -16,7 +19,7 @@ namespace UcakWebProje.Controllers
         private readonly ILogger<HomeController> _logger;
         private LanguageService _localization;
 
-        private TravelContext tc = new TravelContext();
+        private TravelContext tc = new TravelContext(new Microsoft.EntityFrameworkCore.DbContextOptions<TravelContext>());
 
         public HomeController(ILogger<HomeController> logger, LanguageService localization)
         {
@@ -31,7 +34,6 @@ namespace UcakWebProje.Controllers
                 HttpContext.Response.Cookies.Delete("travel");
             }
 
-            ViewData["current"] = HttpContext.Request.Path + HttpContext.Request.QueryString;
             ViewBag.Places = new List<SelectListItem> { 
                 new SelectListItem{ Value = "Istanbul", Text = "Istanbul"},
                 new SelectListItem{ Value = "Ankara", Text = "Ankara"},
@@ -41,35 +43,53 @@ namespace UcakWebProje.Controllers
             return View();
         }
 
-        public IActionResult TicketResults()
+        public IActionResult ChangeLanguage(string culture)
+        {
+            Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName,
+                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)), new CookieOptions()
+                {
+                    Expires = DateTimeOffset.UtcNow.AddYears(1)
+                });
+            string url = Request.Headers["Referer"].ToString();
+            if (url == "")
+            {
+                url = "/Home/Index";
+            }
+            return Redirect(url);
+        }
+
+        public async Task<IActionResult> TicketResults()
         {
             if (HttpContext.Request.Cookies["travel"] is not null)
             {
                 HttpContext.Response.Cookies.Delete("travel");
             }
 
-            ViewData["current"] = HttpContext.Request.Path + HttpContext.Request.QueryString;
-
             if (ModelState.IsValid)
             {
                 string dep = HttpContext.Request.Query["departure"];
                 string des = HttpContext.Request.Query["destination"];
-                if (dep != des)
+                if (dep is not null && des is not null && dep != des)
                 {
                     try
                     {
                         DateTime date = DateTime.Parse(HttpContext.Request.Query["date"]);
                         int numPssngr = int.Parse(HttpContext.Request.Query["numberOfPassengers"]);
+                        
+                        if (numPssngr > 0 && numPssngr <= 500)
+                        {
+                            //Api Call
+                            HttpClient client = new HttpClient();
+                            var response = await client.GetAsync("https://" + HttpContext.Request.Host + "/api/Flights?dep=" + dep +
+                                "&&des=" + des +
+                                "&&date=" + date +
+                                "&&numPssngr=" + numPssngr);
+                            var responseText = await response.Content.ReadAsStringAsync();
+                            IEnumerable<Ucak> flights = JsonConvert.DeserializeObject<IEnumerable<Ucak>>(responseText);
 
-                        var t = tc.Ucaklar.ToList();
-                        var t1 = from travel in tc.Ucaklar
-                                 where travel.departure == dep && travel.destination == des && travel.date > DateTime.Now &&
-                                 travel.date.Year == date.Year && travel.date.Month == date.Month && travel.date.Day == date.Day &&
-                                 travel.seatCount >= numPssngr
-                                 select travel;
-
-                        ViewData["numberOfPassengers"] = numPssngr;
-                        return View(t1);
+                            ViewData["numberOfPassengers"] = numPssngr;
+                            return View(flights);
+                        }
                     }
                     catch { }
                 }
@@ -86,13 +106,7 @@ namespace UcakWebProje.Controllers
                 if (ticket.departure is not null && ticket.destination is not null && ticket.AirLine is not null)
                 {
                     ticket.date = DateTime.Parse(ticket.date.ToString(CultureInfo.GetCultureInfo("en-US")));
-                    string passengerUN = HttpContext.Session.GetString("userSession");
-                    if (passengerUN is null)
-                    {
-                        TempData["loginAlert"] = 1;
-                        return RedirectToAction("Login");
-                    }
-                    else
+                    if (HttpContext.User != null && HttpContext.User.Identity.IsAuthenticated)
                     {
                         var t = tc.Ucaklar.ToList();
                         var tquery = from travel in tc.Ucaklar
@@ -100,10 +114,11 @@ namespace UcakWebProje.Controllers
                                      travel.date == ticket.date && travel.date > DateTime.Now &&
                                      travel.AirLine == ticket.AirLine && travel.seatCount >= ticket.numberOfPassengers
                                      select travel;
+
                         if (tquery.Count() == 1)
                         {
                             var t1 = tquery.First();
-                            var k1 = tc.Kullanicilar.ToList().First(user => user.UserName == passengerUN);
+                            var k1 = tc.Kullanicilar.ToList().First(user => user.UserName == HttpContext.User.Identity.Name);
 
                             tc.Add(new Bilet
                             {
@@ -119,9 +134,14 @@ namespace UcakWebProje.Controllers
                             tc.Update(t1);
                             tc.SaveChanges();
                             HttpContext.Response.Cookies.Delete("travel");
-                            ////////////////////////
-                            return RedirectToAction("MyTickets");
+                            TempData["purchase"] = t1.Price * ticket.numberOfPassengers;
+                            return RedirectToAction("Purchased");
                         }
+                    }
+                    else
+                    {
+                        TempData["loginAlert"] = 1;
+                        return RedirectToPage("/Account/Login", new { area = "Identity" });
                     }
                 }
             }
@@ -130,119 +150,14 @@ namespace UcakWebProje.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult Login()
+        public IActionResult Purchased ()
         {
-            if (HttpContext.Session.GetString("userSession") is not null)
+            if (TempData["purchase"] is null)
             {
                 return RedirectToAction("Index");
             }
-            ViewData["current"] = HttpContext.Request.Path + HttpContext.Request.QueryString;
             return View();
-        }
-        [HttpPost]
-        public IActionResult LoginCheck ()
-        {
-            if (HttpContext.Session.GetString("userSession") is not null)
-            {
-                return RedirectToAction("Index");
-            }
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    StringBuilder sb = new StringBuilder();
-                    using (SHA256 sha256Hash = SHA256.Create())
-                    {
-                        byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(HttpContext.Request.Form["Password"].ToString()));
-
-                        for (int i = 0; i < bytes.Length; i++)
-                        {
-                            sb.Append(bytes[i].ToString("x2"));
-                        }
-                    }
-                    var k = tc.Kullanicilar.ToList();
-                    var u = from user in tc.Kullanicilar
-                            where user.UserName == HttpContext.Request.Form["UserName"].ToString() &&
-                            user.Password == sb.ToString()
-                            select user;
-                    HttpContext.Session.SetString("userSession", u.First().UserName);
-                    return RedirectToAction("MyTickets");
-                }
-                catch {
-                    TempData["loginFailed"] = 1;
-                    return RedirectToAction("Login");
-                }
-            }
-            TempData["Error"] = 1;
-            return RedirectToAction("Index");
-        }
-
-        public IActionResult SignUp()
-        {
-            if (HttpContext.Session.GetString("userSession") is not null)
-            {
-                return RedirectToAction("Index");
-            }
-            ViewData["current"] = HttpContext.Request.Path + HttpContext.Request.QueryString;
-            return View();
-        }
-        [HttpPost]
-        public IActionResult SignUpCheck ()
-        {
-            if (HttpContext.Session.GetString("userSession") is not null)
-            {
-                return RedirectToAction("Index");
-            }
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    StringBuilder sb = new StringBuilder();
-                    using (SHA256 sha256Hash = SHA256.Create())
-                    {
-                        byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(HttpContext.Request.Form["Password"].ToString()));
-
-                        for (int i = 0; i < bytes.Length; i++)
-                        {
-                            sb.Append(bytes[i].ToString("x2"));
-                        }
-                    }
-                    tc.Add(new User()
-                    {
-                        UserName = HttpContext.Request.Form["UserName"].ToString(),
-                        Password = sb.ToString(),
-                        FirstName = HttpContext.Request.Form["FirstName"].ToString(),
-                        LastName = HttpContext.Request.Form["LastName"].ToString(),
-                        Mail = HttpContext.Request.Form["Mail"].ToString(),
-                        phoneNum = HttpContext.Request.Form["phoneNum"].ToString()
-                    });
-                    tc.SaveChanges();
-                    HttpContext.Session.SetString("userSession", HttpContext.Request.Form["UserName"].ToString());
-                    return RedirectToAction("MyTickets");
-                }
-                catch
-                {
-                    TempData["signupFailed"] = 1;
-                    return RedirectToAction("SignUp");
-                }
-            }
-            TempData["Error"] = 1;
-            return RedirectToAction("Index");
-        }
-
-        public IActionResult MyTickets()
-        {
-            if (HttpContext.Request.Cookies["travel"] is not null)
-            {
-                return RedirectToAction("BuyTicket");
-            }
-            if (HttpContext.Session.GetString("userSession") is null)
-            {
-                return RedirectToAction("Login");
-            }
-            ViewData["current"] = HttpContext.Request.Path + HttpContext.Request.QueryString;
-            return View();
-        }
+        } 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

@@ -1,0 +1,51 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = _localization.GetKey("Login").Value;
+    <script src="~/js/sweetalert.js"></script>
+    if (TempData["loginAlert"] is not null)
+    {
+        <script language="javascript">
+            Swal.fire({ title: '@_localization.GetKey("pLogin").Value', text: '@_localization.GetKey("loginBuy").Value', icon: 'info', html: '@_localization.GetKey("loginBuy").Value' })
+        </script>
+    }
+    if (TempData["loginFailed"] is not null)
+    {
+        <script language="javascript">
+            Swal.fire({ title: '@_localization.GetKey("Login Failed").Value', text: '@_localization.GetKey("wrongEntry").Value', icon: 'error', html: '@_localization.GetKey("wrongEntry").Value' })
+        </script>
+    }
+}
+
+<script src="~/js/particles.js">
+</script>
+<script language="javascript">
+    particlesJS.load('particles-js', '/particles.json', function () {
+        console.log('particles.js loaded');
+    });
+</script>
+
+<div id="particles-js"></div>
+<div class="d-flex justify-content-center userForm" style="margin-top:10px; z-index: 1; position: absolute; background-color:white">
+            <form id="account" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Input.UserName" class="control-label"></label>
+                    <input asp-for="Input.UserName" class="form-control" />
+                    <span asp-validation-for="Input.UserName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.Password" class="control-label"></label>
+                    <input asp-for="Input.Password" class="form-control" />
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+                <div>
+            <button id="login-submit" style="margin-top: 7px; margin-bottom: 7px;" type="submit" class="w-100 btn btn-primary">@_localization.GetKey("Login").Value</button>
+                </div>
+            </form>
+    </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

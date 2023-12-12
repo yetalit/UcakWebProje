@@ -144,6 +144,9 @@
   <data name="From" xml:space="preserve">
     <value>Nereden</value>
   </data>
+  <data name="Hello" xml:space="preserve">
+    <value>Merhaba</value>
+  </data>
   <data name="Home" xml:space="preserve">
     <value>Ana Sayfa</value>
   </data>
@@ -162,14 +165,17 @@
   <data name="loginBuy" xml:space="preserve">
     <value>bilet satın alabilmek için</value>
   </data>
+  <data name="LogOut" xml:space="preserve">
+    <value>Çıkış Yap</value>
+  </data>
   <data name="Maximum length is {1} characters!" xml:space="preserve">
     <value>{1} karakter maksimum uzunluktur!</value>
   </data>
   <data name="Number of Passengers" xml:space="preserve">
     <value>Yolcu Sayısı</value>
   </data>
-  <data name="Only letters and numbers are allowed!" xml:space="preserve">
-    <value>Sadece harfler ve rakamlar kullanılabilir!</value>
+  <data name="Only letters, numbers, @ and . are allowed!" xml:space="preserve">
+    <value>Sadece harfler, rakamlar, @ ve . kullanılabilir!</value>
   </data>
   <data name="Or" xml:space="preserve">
     <value>Veya</value>
@@ -179,6 +185,9 @@
   </data>
   <data name="otherUser" xml:space="preserve">
     <value>Başka bir kullanıcı adı giriniz</value>
+  </data>
+  <data name="Panel" xml:space="preserve">
+    <value>Paneli</value>
   </data>
   <data name="Passenger Username" xml:space="preserve">
     <value>Yolcu Kullanıcı Adı</value>
@@ -202,10 +211,16 @@
     <value>Lütfen geçerli bir telefon numarası giriniz!</value>
   </data>
   <data name="pLogin" xml:space="preserve">
-    <value>Giriş Yapınız</value>
+    <value>Giriş Yapınız veya Kayıt Olunuz</value>
   </data>
   <data name="Price" xml:space="preserve">
     <value>Fiyat</value>
+  </data>
+  <data name="purch" xml:space="preserve">
+    <value>Satın Alma Başarılı</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>Kayıt Ol</value>
   </data>
   <data name="ResultNotFound" xml:space="preserve">
     <value>Herhangi bir sonuç bulunamadı!</value>
@@ -215,9 +230,6 @@
   </data>
   <data name="Seats Remaining" xml:space="preserve">
     <value>Kalan Koltuk</value>
-  </data>
-  <data name="SignUp" xml:space="preserve">
-    <value>Kayıt Ol</value>
   </data>
   <data name="This field is required!" xml:space="preserve">
     <value>Bu alanı doldurmalısınız!</value>
@@ -233,6 +245,9 @@
   </data>
   <data name="To" xml:space="preserve">
     <value>Nereye</value>
+  </data>
+  <data name="totCost" xml:space="preserve">
+    <value>Toplam Ödenen Ücret:</value>
   </data>
   <data name="Username" xml:space="preserve">
     <value>Kullanıcı Adı</value>

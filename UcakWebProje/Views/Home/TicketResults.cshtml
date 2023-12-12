@@ -66,3 +66,12 @@
         <a class="btn btn-primary" asp-action="Index">@_localization.GetKey("backHome")</a>
     </center>
 </p>
+<script language="javascript">
+    function setCookie(cname, cvalue, exdays) {
+        const d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        _cvalue = encodeURIComponent(cvalue);
+        let expires = "expires=" + d.toUTCString();
+        document.cookie = cname + "=" + _cvalue + ";" + expires + ";path = /";
+    }
+</script>

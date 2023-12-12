@@ -3,8 +3,18 @@ using Microsoft.Extensions.Options;
 using System.Globalization;
 using System.Reflection;
 using UcakWebProje.Services;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using UcakWebProje.Areas.Identity.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("TravelContextConnection") ?? throw new InvalidOperationException("Connection string 'TravelContextConnection' not found.");
+
+builder.Services.AddDbContext<TravelContext>(options =>
+    options.UseSqlServer(connectionString));
+
+builder.Services.AddDefaultIdentity<User>(options => { options.SignIn.RequireConfirmedAccount = false; options.SignIn.RequireConfirmedEmail = false; })
+    .AddEntityFrameworkStores<TravelContext>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -34,6 +44,17 @@ builder.Services.Configure<RequestLocalizationOptions>(ops =>
     ops.RequestCultureProviders.Insert(0, new QueryStringRequestCultureProvider());
 });
 
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    // Default Password settings.
+    options.Password.RequireDigit = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequiredLength = 3;
+    options.Password.RequiredUniqueChars = 0;
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -52,11 +73,14 @@ app.UseRequestLocalization(app.Services.GetRequiredService<IOptions<RequestLocal
 app.UseRouting();
 
 app.UseSession();
+app.UseAuthentication();;
 
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapRazorPages();
 
 app.Run();
