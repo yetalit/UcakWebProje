@@ -110,7 +110,7 @@ namespace UcakWebProje.Areas.Identity.Pages.Account
                 StringBuilder sb = new StringBuilder();
                 using (SHA256 sha256Hash = SHA256.Create())
                 {
-                    byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(HttpContext.Request.Form["Password"].ToString()));
+                    byte[] bytes = sha256Hash.ComputeHash(Encoding.ASCII.GetBytes(HttpContext.Request.Form["Input.Password"].ToString()));
 
                     for (int i = 0; i < bytes.Length; i++)
                     {
@@ -125,21 +125,13 @@ namespace UcakWebProje.Areas.Identity.Pages.Account
                     _logger.LogInformation("User logged in.");
                     if (HttpContext.Request.Cookies["travel"] is not null)
                     {
-                        return RedirectToAction("BuyTicket", "Home", new { area = "" });
+                        return Redirect("https://" + HttpContext.Request.Host + "/Home/BuyTicket");
                     }
                     return LocalRedirect(returnUrl);
                 }
-                if (result.IsLockedOut)
-                {
-                    _logger.LogWarning("User account locked out.");
-                    return RedirectToPage("./Lockout");
-                }
-                else
-                {
-                    //ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    TempData["loginFailed"] = 1;
-                    return Page();
-                }
+                //ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                TempData["loginFailed"] = 1;
+                return Page();
             }
 
             // If we got this far, something failed, redisplay form

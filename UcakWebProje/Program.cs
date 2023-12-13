@@ -113,7 +113,7 @@ public class Program
         {
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
             string admin = "b211210574@sakarya.edu.tr";
-            string pass = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
+            string pass = "dfb3c9aac79bac448ca7c11952aba5a27ebb963f2070c5ea16e4074ceb1c0ad0";
             if (await userManager.FindByNameAsync(admin) == null)
             {
                 var user = new User();

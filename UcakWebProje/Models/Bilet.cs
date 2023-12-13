@@ -13,8 +13,8 @@ namespace UcakWebProje.Models
         [Key, ForeignKey("userName")]
         [Display(Name = "Passenger Username")]
         [Required(ErrorMessage = "This field is required!")]
-        [RegularExpression("^[a-zA-Z0-9]+$", ErrorMessage = "Only letters and numbers are allowed!")]
-        [MaxLength(20, ErrorMessage = "Maximum length is {1} characters!")]
+        [RegularExpression("^[a-zA-Z0-9@.]+$", ErrorMessage = "Only letters, numbers, @ and . are allowed!")]
+        [MaxLength(30, ErrorMessage = "Maximum length is {1} characters!")]
         public string passengerUN { get; set; }
 
         [Key]

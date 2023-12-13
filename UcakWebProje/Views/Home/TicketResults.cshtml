@@ -50,7 +50,7 @@
                     @Html.DisplayFor(modelItem => item.seatCount)
                 </td>
                 <td>
-                    <a class="btn btn-success" onclick="const jsonObj = {departure:'@item.departure', destination:'@item.destination', date:'@item.date', AirLine:'@item.AirLine', numberOfPassengers:'@ViewData["numberOfPassengers"]', passengerUN:'', orderTime:'@item.date' }; setCookie('travel', JSON.stringify(jsonObj) , 1)" href="/Home/BuyTicket">@_localization.GetKey("Buy").Value</a>
+                    <a class="btn btn-success" onclick="const jsonObj = {departure:'@item.departure', destination:'@item.destination', date:'@item.date.ToString(System.Globalization.CultureInfo.GetCultureInfo("en-US"))', AirLine:'@item.AirLine', numberOfPassengers:'@ViewData["numberOfPassengers"]', passengerUN:'0', orderTime:'12/12/2023 00:00:00 AM' }; setCookie('travel', JSON.stringify(jsonObj) , 1)" href="/Home/BuyTicket">@_localization.GetKey("Buy").Value</a>
                 </td>
             </tr>
         }

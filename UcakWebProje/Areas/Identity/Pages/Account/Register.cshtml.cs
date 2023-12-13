@@ -130,7 +130,7 @@ namespace UcakWebProje.Areas.Identity.Pages.Account
                 StringBuilder sb = new StringBuilder();
                 using (SHA256 sha256Hash = SHA256.Create())
                 {
-                    byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(HttpContext.Request.Form["Password"].ToString()));
+                    byte[] bytes = sha256Hash.ComputeHash(Encoding.ASCII.GetBytes(HttpContext.Request.Form["Input.Password"].ToString()));
 
                     for (int i = 0; i < bytes.Length; i++)
                     {
@@ -174,7 +174,7 @@ namespace UcakWebProje.Areas.Identity.Pages.Account
                         await _signInManager.SignInAsync(user, isPersistent: false);
                         if (HttpContext.Request.Cookies["travel"] is not null)
                         {
-                            return RedirectToAction("BuyTicket", "Home", new { area = "" });
+                            return Redirect("https://" + HttpContext.Request.Host + "/Home/BuyTicket");
                         }
                         return LocalRedirect(returnUrl);
                     }

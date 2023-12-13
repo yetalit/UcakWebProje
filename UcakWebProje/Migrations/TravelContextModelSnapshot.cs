@@ -267,8 +267,8 @@ namespace UcakWebProje.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("passengerUN")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<DateTime>("orderTime")
                         .HasColumnType("datetime2");

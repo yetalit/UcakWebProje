@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Add" xml:space="preserve">
+    <value>Ekle</value>
+  </data>
   <data name="Airlines" xml:space="preserve">
     <value>Hava Yolları Şirketi</value>
   </data>
@@ -140,6 +143,9 @@
   </data>
   <data name="First Name" xml:space="preserve">
     <value>Ad</value>
+  </data>
+  <data name="flightAdded" xml:space="preserve">
+    <value>Uçuş eklendi!</value>
   </data>
   <data name="From" xml:space="preserve">
     <value>Nereden</value>
@@ -170,6 +176,9 @@
   </data>
   <data name="Maximum length is {1} characters!" xml:space="preserve">
     <value>{1} karakter maksimum uzunluktur!</value>
+  </data>
+  <data name="myTickets" xml:space="preserve">
+    <value>Biletlerimi Göster</value>
   </data>
   <data name="Number of Passengers" xml:space="preserve">
     <value>Yolcu Sayısı</value>
@@ -219,6 +228,9 @@
   <data name="Register" xml:space="preserve">
     <value>Kayıt Ol</value>
   </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Sil</value>
+  </data>
   <data name="ResultNotFound" xml:space="preserve">
     <value>Herhangi bir sonuç bulunamadı!</value>
   </data>
@@ -227,6 +239,18 @@
   </data>
   <data name="Seats Remaining" xml:space="preserve">
     <value>Kalan Koltuk</value>
+  </data>
+  <data name="staffError" xml:space="preserve">
+    <value>Kullanıcı bulunamadı!</value>
+  </data>
+  <data name="staffMsg" xml:space="preserve">
+    <value>Yeni personel eklendi!</value>
+  </data>
+  <data name="staffRemove" xml:space="preserve">
+    <value>Personel silindi!</value>
+  </data>
+  <data name="Successful" xml:space="preserve">
+    <value>Başarılı</value>
   </data>
   <data name="This field is required!" xml:space="preserve">
     <value>Bu alanı doldurmalısınız!</value>

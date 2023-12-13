@@ -1,7 +1,166 @@
 ﻿@page
 
 @{
-    ViewData["Title"] = "Profile";
+    <script src="~/js/sweetalert.js"></script>
+    if (TempData["purchase"] is not null)
+    {
+        <script language="javascript">
+            Swal.fire({ title: '@_localization.GetKey("purch").Value', text: '@_localization.GetKey("totCost").Value @TempData["purchase"].ToString() TL', icon: 'success', html: '@_localization.GetKey("totCost").Value @TempData["purchase"].ToString() TL' }).then(function () {
+                window.location = location.origin + "/Identity/Account/Manage";
+            });
+        </script>
+    }
+    if (TempData["staff"] is not null)
+    {
+        <script language="javascript">
+            Swal.fire({ title: '@_localization.GetKey("Successful").Value', text: '@TempData["staff"].ToString()', icon: 'success', html: '@TempData["staff"].ToString()' }).then(function () {
+                window.location = location.origin + "/Identity/Account/Manage";
+            });
+        </script>
+    }
+    else if (TempData["staffError"] is not null)
+    {
+        <script language="javascript">
+            Swal.fire({ title: '@_localization.GetKey("Error").Value', text: '@TempData["staffError"].ToString()', icon: 'error', html: '@TempData["staffError"].ToString()' }).then(function () {
+                window.location = location.origin + "/Identity/Account/Manage";
+            });
+        </script>
+    }
+
+    TravelContext tc = new TravelContext(new Microsoft.EntityFrameworkCore.DbContextOptions<TravelContext>());
+
+    if (User.IsInRole("Admin") && TempData["showTickets"] is null)
+    {
+        <div class="d-flex justify-content-center">
+        <form asp-action="AddStaff" asp-controller="Home">
+                <div class="form-group">
+                <label class="control-label" for="@_localization.GetKey("UserName").Value">@_localization.GetKey("Username").Value</label>
+                    <input class="form-control" type="text" id="UserName" name="UserName" value="" required>
+                </div>
+                <div>
+            <button id="submit" style="margin-top: 7px; margin-bottom: 7px;" type="submit" class="w-100 btn btn-success">@_localization.GetKey("Add").Value</button>
+                </div>
+        </form>
+        </div>
+        <hr />
+        <div class="d-flex justify-content-center">
+            <form asp-action="RemoveStaff" asp-controller="Home">
+                <div class="form-group">
+                    <label class="control-label" for="@_localization.GetKey("UserName").Value">@_localization.GetKey("Username").Value</label>
+                    <input class="form-control" type="text" id="UserName" name="UserName" value="" required>
+                </div>
+                <div>
+                    <button id="submit" style="margin-top: 7px; margin-bottom: 7px;" type="submit" class="w-100 btn btn-danger">@_localization.GetKey("Remove").Value</button>
+                </div>
+            </form>
+        </div>
+        <hr />
+        <div>
+            <center><a asp-action="RedToTickets" asp-controller="Home" class="btn btn-primary">@_localization.GetKey("myTickets").Value</a></center>
+        </div>
+    }
+    else if (User.IsInRole("Staff") && TempData["showTickets"] is null)
+    {
+        <div class="d-flex justify-content-center">
+            <form asp-action="AddFlight" asp-controller="Home">
+                <div class="form-group">
+                    <label class="control-label" for="departure">@_localization.GetKey("From").Value</label>
+                    <input class="form-control" type="text" id="departure" name="departure" value="" required />
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="destination">@_localization.GetKey("To").Value</label>
+                    <input class="form-control" type="text" id="destination" name="destination" value="" required />
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="date">@_localization.GetKey("Date").Value</label>
+                    <input class="form-control" type="datetime-local" id="date" name="date" value="" required />
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="AirLine">@_localization.GetKey("Airlines").Value</label>
+                    <input class="form-control" type="text" id="AirLine" name="AirLine" value="" required />
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="seatCount">@_localization.GetKey("Seat Count").Value</label>
+                    <input class="form-control" type="number" id="seatCount" name="seatCount" value="" required />
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="Price">@_localization.GetKey("Price").Value</label>
+                    <input class="form-control" type="number" id="Price" name="Price" value="" required />
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="@_localization.GetKey("Add").Value" class="btn btn-primary" style="margin-top: 7px; margin-bottom: 7px;" />
+                </div>
+            </form>
+        </div>
+        <hr />
+        <center><a asp-action="RedToTickets" asp-controller="Home" class="btn btn-secondary">@_localization.GetKey("myTickets").Value</a></center>
+    }
+    else
+    {
+        var tquery = (from travel in tc.Biletler
+                      where travel.passengerUN == User.Identity.Name
+                      select travel).ToList();
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @_localization.GetKey("From").Value
+                    </th>
+                    <th>
+                        @_localization.GetKey("To").Value
+                    </th>
+                    <th>
+                        @_localization.GetKey("Date").Value
+                    </th>
+                    <th>
+                        @_localization.GetKey("Airlines").Value
+                    </th>
+                    <th>
+                        @_localization.GetKey("Number of Passengers").Value
+                    </th>
+                    <th>
+                        @_localization.GetKey("Price").Value
+                    </th>
+                    <th>
+                        @_localization.GetKey("Order Time").Value
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in tquery)
+                {
+                    string price = (from travel in tc.Ucaklar
+                                    where travel.departure == item.departure && travel.destination == item.destination &&
+                                    travel.date == item.date && travel.AirLine == item.AirLine
+                                    select travel).ToList().FirstOrDefault().Price.ToString();
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.departure)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.destination)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.date)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AirLine)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.numberOfPassengers)
+                        </td>
+                        <td>
+                            @price TL
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.orderTime)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
 }
 
 @section Scripts {

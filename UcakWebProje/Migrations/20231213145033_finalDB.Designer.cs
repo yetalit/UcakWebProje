@@ -12,8 +12,8 @@ using UcakWebProje.Areas.Identity.Data;
 namespace UcakWebProje.Migrations
 {
     [DbContext(typeof(TravelContext))]
-    [Migration("20231211224031_firsDB")]
-    partial class firsDB
+    [Migration("20231213145033_finalDB")]
+    partial class finalDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -270,8 +270,8 @@ namespace UcakWebProje.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("passengerUN")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<DateTime>("orderTime")
                         .HasColumnType("datetime2");

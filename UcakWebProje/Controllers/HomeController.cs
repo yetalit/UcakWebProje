@@ -4,13 +4,13 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Globalization;
-using System.IO;
-using System.Security.Cryptography;
-using System.Text;
 using UcakWebProje.Models;
 using UcakWebProje.Services;
 using UcakWebProje.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.CodeAnalysis;
+using Microsoft.AspNetCore.Authorization;
+using System.Net.Sockets;
 
 namespace UcakWebProje.Controllers
 {
@@ -18,13 +18,15 @@ namespace UcakWebProje.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private LanguageService _localization;
+        private IServiceProvider _serviceProvider;
 
         private TravelContext tc = new TravelContext(new Microsoft.EntityFrameworkCore.DbContextOptions<TravelContext>());
 
-        public HomeController(ILogger<HomeController> logger, LanguageService localization)
+        public HomeController(ILogger<HomeController> logger, LanguageService localization, IServiceProvider serviceProvider)
         {
             _logger = logger;
             _localization = localization;
+            _serviceProvider = serviceProvider;
         }
 
         public IActionResult Index()
@@ -81,11 +83,19 @@ namespace UcakWebProje.Controllers
                             //Api Call
                             HttpClient client = new HttpClient();
                             var response = await client.GetAsync("https://" + HttpContext.Request.Host + "/api/Flights?dep=" + dep +
-                                "&&des=" + des +
-                                "&&date=" + date +
-                                "&&numPssngr=" + numPssngr);
+                                "&des=" + des +
+                                "&date=" + date.ToString(CultureInfo.GetCultureInfo("en-US")) +
+                                "&numPssngr=" + numPssngr);
                             var responseText = await response.Content.ReadAsStringAsync();
-                            IEnumerable<Ucak> flights = JsonConvert.DeserializeObject<IEnumerable<Ucak>>(responseText);
+                            IEnumerable<Ucak> flights;
+                            try
+                            {
+                                flights = JsonConvert.DeserializeObject<IEnumerable<Ucak>>(responseText);
+                            }
+                            catch {
+                                List<Ucak> empty = new List<Ucak>();
+                                flights = empty;
+                            }
 
                             ViewData["numberOfPassengers"] = numPssngr;
                             return View(flights);
@@ -105,7 +115,6 @@ namespace UcakWebProje.Controllers
                 Bilet ticket = JsonConvert.DeserializeObject<Bilet>(HttpContext.Request.Cookies["travel"]);
                 if (ticket.departure is not null && ticket.destination is not null && ticket.AirLine is not null)
                 {
-                    ticket.date = DateTime.Parse(ticket.date.ToString(CultureInfo.GetCultureInfo("en-US")));
                     if (HttpContext.User != null && HttpContext.User.Identity.IsAuthenticated)
                     {
                         var tquery = from travel in tc.Ucaklar
@@ -134,13 +143,13 @@ namespace UcakWebProje.Controllers
                             tc.SaveChanges();
                             HttpContext.Response.Cookies.Delete("travel");
                             TempData["purchase"] = t1.Price * ticket.numberOfPassengers;
-                            return RedirectToAction("Purchased");
+                            return Redirect("https://" + HttpContext.Request.Host + "/Identity/Account/Manage");
                         }
                     }
                     else
                     {
                         TempData["loginAlert"] = 1;
-                        return RedirectToPage("/Account/Login", new { area = "Identity" });
+                        return Redirect("https://" + HttpContext.Request.Host + "/Identity/Account/Login");
                     }
                 }
             }
@@ -149,14 +158,70 @@ namespace UcakWebProje.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult Purchased ()
+        public IActionResult RedToTickets ()
         {
-            if (TempData["purchase"] is null)
+            TempData["showTickets"] = 1;
+            return Redirect("https://" + HttpContext.Request.Host + "/Identity/Account/Manage");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> AddStaff()
+        {
+            using (var scope = _serviceProvider.CreateScope())
             {
-                return RedirectToAction("Index");
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+                User u = await userManager.FindByNameAsync(HttpContext.Request.Form["Username"].ToString());
+                if (u == null)
+                {
+                    TempData["staffError"] = _localization.GetKey("staffError").Value;
+                }
+                else
+                {
+                    await userManager.AddToRoleAsync(u, "Staff");
+                    TempData["staff"] = _localization.GetKey("staffMsg").Value;
+                }
+                return Redirect("https://" + HttpContext.Request.Host + "/Identity/Account/Manage");
             }
-            return View();
-        } 
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> RemoveStaff()
+        {
+            using (var scope = _serviceProvider.CreateScope())
+            {
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+                User u = await userManager.FindByNameAsync(HttpContext.Request.Form["Username"].ToString());
+                if (u == null)
+                {
+                    TempData["staffError"] = _localization.GetKey("staffError").Value;
+                }
+                else
+                {
+                    await userManager.RemoveFromRoleAsync(u, "Staff");
+                    TempData["staff"] = _localization.GetKey("staffRemove").Value;
+                }
+                return Redirect("https://" + HttpContext.Request.Host + "/Identity/Account/Manage");
+            }
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Staff")]
+        public IActionResult AddFlight (Ucak f)
+        {
+            try
+            {
+                tc.Add(f);
+                tc.SaveChanges();
+                TempData["staff"] = _localization.GetKey("flightAdded").Value;
+            }
+            catch
+            {
+                TempData["staffError"] = _localization.GetKey("wrongEntry").Value;
+            }
+            return Redirect("https://" + HttpContext.Request.Host + "/Identity/Account/Manage");
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
